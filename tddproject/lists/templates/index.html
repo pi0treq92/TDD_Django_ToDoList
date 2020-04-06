@@ -1,0 +1,19 @@
+<html>
+    <head>
+        <title>To-Do</title>
+    </head>
+    <body>
+        <h1>To-Do</h1>
+        <form method="post">
+            <input name="item_text" id="inputbox_id" placeholder="Type to-do">
+            {% csrf_token %}
+        </form>
+        <table id="table_id">
+            {% for item in items %}
+                <tr>
+                    <td>{{ forloop.counter }}: {{ item.text }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
