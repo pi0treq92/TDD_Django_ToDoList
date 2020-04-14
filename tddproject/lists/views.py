@@ -1,10 +1,23 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Item
+from .models import Item, List
+
 
 def index_page(request):
-    if request.method == 'POST':
-        Item.objects.create(text=request.POST['item_text'])
-        return redirect('/')
-    items = Item.objects.all()
-    return render(request, 'index.html', {'items': items})
+    return render(request, 'index.html')
+
+
+def view_list(request, pk):
+    list_ = List.objects.get(id=pk)
+    return render(request, 'list.html', {'list': list_})
+
+
+def new_list(request):
+    list_ = List.objects.create()
+    Item.objects.create(text=request.POST['item_text'], list=list_)
+    return redirect(f'/lists/{list_.pk}')
+
+
+def new_item(request, pk):
+    list_ = List.objects.get(id=pk)
+    Item.objects.create(text=request.POST['item_text'], list=list_)
+    return redirect(f'/lists/{list_.id}/')
