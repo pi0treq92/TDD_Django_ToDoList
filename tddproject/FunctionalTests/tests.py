@@ -18,7 +18,7 @@ class GuestTest(LiveServerTestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def test_check_title(self):
+    def _test_check_title(self):
         self.browser.get(self.live_server_url)
         self.assertIn('To-Do', self.browser.title)
         inputbox = self.browser.find_element_by_id('inputbox_id')
@@ -31,7 +31,7 @@ class GuestTest(LiveServerTestCase):
         self.assertIn('1: Zaplac rachunek', [r.text for r in row])
         # self.fail('Finish the test!')
 
-    def test_multiple_users_lists_urls_check(self):
+    def _test_multiple_users_lists_urls_check(self):
         self.browser.get(self.live_server_url)
         inputbox = self.browser.find_element_by_id('inputbox_id')
         inputbox.send_keys('Buy milk')
@@ -49,6 +49,12 @@ class GuestTest(LiveServerTestCase):
         second_user_list = self.browser.current_url
         #self.assertRegex(second_user_list, 'lists/.+')
         self.assertNotEqual(first_user_list, second_user_list)
+
+    def test_layout(self):
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+        inputbox = self.browser.find_element_by_id('inputbox_id')
+        self.assertAlmostEqual(inputbox.location['x'] + inputbox.size['width']/2, 512, delta=10)
 
 
 if __name__ == '__main__':
